@@ -137,11 +137,14 @@ class ProcessDefinitionBuilder:
         return defs
 
     def linked_app_dev_definitions(self) -> list[ProcessDefinition]:
-        """The dev processes of linked apps with a dev script."""
+        """The dev processes of linked apps with a dev script, limited by `app_dev_servers` when set."""
+        allowed = self.bench.config.app_dev_servers
         return [
             self.app_dev_definition(app)
             for app in self.bench.apps()
-            if app.is_linked and NodePackages(app.path).has_script("dev")
+            if app.is_linked
+            and (allowed is None or app.config.name in allowed)
+            and NodePackages(app.path).has_script("dev")
         ]
 
     def app_dev_definition(self, app: "App") -> ProcessDefinition:
