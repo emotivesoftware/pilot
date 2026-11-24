@@ -208,6 +208,8 @@ class BenchConfig:
     watch_apps_js: bool = True
     reload_python: bool = True
     watch_admin_js: bool = False
+    # Linked apps whose `dev` script runs with the bench. None runs every linked app's.
+    app_dev_servers: list[str] | None = None
     # The single database engine for this bench's sites: "mariadb" or "postgres".
     db_type: str = "mariadb"
     default_branch: str = ""
@@ -317,6 +319,7 @@ class BenchConfig:
             watch_apps_js=bench_data.get("watch_apps_js", True),
             reload_python=bench_data.get("reload_python", True),
             watch_admin_js=bench_data.get("watch_admin_js", False),
+            app_dev_servers=bench_data.get("app_dev_servers"),
             db_type=bench_data.get("db_type", "mariadb"),
             default_branch=bench_data.get("default_branch", ""),
             enable_code_editor=bench_data.get("enable_code_editor", True),
@@ -695,6 +698,8 @@ class BenchConfig:
             bench["onboarding"] = self.onboarding
         if self.country:
             bench["country"] = self.country
+        if self.app_dev_servers is not None:
+            bench["app_dev_servers"] = list(self.app_dev_servers)
         return bench
 
     def _apps_section(self) -> list[ConfigDict]:
@@ -1008,6 +1013,7 @@ _BENCH_KEYS = {
     "watch_apps_js",
     "reload_python",
     "watch_admin_js",
+    "app_dev_servers",
     "db_type",
     "default_branch",
     "enable_code_editor",

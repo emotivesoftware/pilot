@@ -36,7 +36,7 @@ If an earlier run stopped before the site was created, for example with Ctrl-C, 
 
 ## Start
 
-`pilot dev start` runs Redis and one web process that also serves realtime and background jobs. The bench has the Admin disabled, so the Admin does not run. If the app's `package.json` has a `dev` script, it runs that too, with `FRAPPE_WEB_SERVER_PORT` set so frappe-ui's Vite proxy reaches this bench.
+`pilot dev start` runs Redis and one web process that also serves realtime and background jobs. The bench has the Admin disabled, so the Admin does not run. If the app's `package.json` has a `dev` script, it runs that too, with `FRAPPE_WEB_SERVER_PORT` set so frappe-ui's Vite proxy reaches this bench. To start only some linked apps' `dev` scripts, or none, list them in `app_dev_servers` under `[bench]` in `bench.toml`.
 
 The asset watcher uses about 2.8 GB of memory while idle, so `pilot dev setup` turns it on only for an app that has Desk bundles: `*.bundle.js`, `*.bundle.css`, and similar files under `<app>/public`. An app without them, such as one with only a Vite frontend, does not need the watcher. `pilot dev setup` builds the assets, and the app's `dev` script covers frontend changes. To change the setting, set `watch_apps_js` under `[bench]` in `bench.toml` and restart.
 
